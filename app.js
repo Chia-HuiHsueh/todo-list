@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
+const Todo = require('./models/todo')
 
 const app = express()
 const port = 3000
@@ -30,7 +31,10 @@ db.once('open', () => {
 // 設定路由
 // Todo 首頁
 app.get('/', (req, res) => {
-  res.render('index')
+  Todo.find() // 取出 Todo model 裡的所有資料
+    .lean() // 把 Mongoose 的 Model 物件轉換成乾淨的 JavaScript 資料陣列//撈資料以後想用 res.render()，要先用 .lean() 來處理
+    .then(todos => res.render('index', { todos })) // 將資料傳給 index 樣板
+    .catch(error => console.error(error)) // 錯誤處理
 })
 
 app.listen(port, () => {
