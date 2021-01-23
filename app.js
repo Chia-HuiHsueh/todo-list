@@ -71,7 +71,26 @@ app.get('/todos/:id', (req, res) => {
     .then((todo) => res.render('detail', { todo }))//資料傳送到前端面板
     .catch(error => console.log(error))
 })
-
+//顯示單筆資料可編輯內容
+app.get('/todos/:id/edit', (req, res) => {
+  const id = req.params.id
+  return Todo.findById(id)
+    .lean()
+    .then((todo) => res.render('edit', { todo }))
+    .catch(error => console.log(error))
+})
+//提交更新內容
+app.post('/todos/:id/edit', (req, res) => {
+  const id = req.params.id
+  const name = req.body.name //新修改好的資料
+  return Todo.findById(id)
+    .then(todo => {
+      todo.name = name //把原來todo資料改成新的
+      return todo.save()//存
+    })
+    .then(() => res.redirect(`/todos/${id}`))
+    .catch(error => console.log(error))
+})
 app.listen(port, () => {
   console.log('App is running on http://localhost：3000')
 })
