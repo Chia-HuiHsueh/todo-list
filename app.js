@@ -46,6 +46,7 @@ app.get('/', (req, res) => {
 app.get('/todos/new', (req, res) => {
   return res.render('new')
 })
+//新增資料
 app.post('/todos', (req, res) => {
 
   //方法一：直接操作資料庫
@@ -63,7 +64,8 @@ app.post('/todos', (req, res) => {
   // .catch(error => console.log(error))
 
 })
-//路由使用動態參數
+
+//查詢資料：路由使用動態參數
 app.get('/todos/:id', (req, res) => {
   const id = req.params.id
   return Todo.findById(id) //從資料庫撈資料
@@ -71,6 +73,7 @@ app.get('/todos/:id', (req, res) => {
     .then((todo) => res.render('detail', { todo }))//資料傳送到前端面板
     .catch(error => console.log(error))
 })
+
 //顯示單筆資料可編輯內容
 app.get('/todos/:id/edit', (req, res) => {
   const id = req.params.id
@@ -79,6 +82,7 @@ app.get('/todos/:id/edit', (req, res) => {
     .then((todo) => res.render('edit', { todo }))
     .catch(error => console.log(error))
 })
+
 //提交更新內容
 app.post('/todos/:id/edit', (req, res) => {
   const id = req.params.id
@@ -91,6 +95,16 @@ app.post('/todos/:id/edit', (req, res) => {
     .then(() => res.redirect(`/todos/${id}`))
     .catch(error => console.log(error))
 })
+
+//delete
+app.post('/todos/:id/delete', (req, res) => {
+  const id = req.params.id
+  return Todo.findById(id)
+    .then(todo => todo.remove())
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
+
 app.listen(port, () => {
   console.log('App is running on http://localhost：3000')
 })
