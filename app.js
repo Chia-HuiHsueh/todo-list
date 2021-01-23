@@ -63,6 +63,14 @@ app.post('/todos', (req, res) => {
   // .catch(error => console.log(error))
 
 })
+//路由使用動態參數
+app.get('/todos/:id', (req, res) => {
+  const id = req.params.id
+  return Todo.findById(id) //從資料庫撈資料
+    .lean() //過濾資料轉換成單純的JS物件
+    .then((todo) => res.render('detail', { todo }))//資料傳送到前端面板
+    .catch(error => console.log(error))
+})
 
 app.listen(port, () => {
   console.log('App is running on http://localhost：3000')
