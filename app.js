@@ -86,11 +86,23 @@ app.get('/todos/:id/edit', (req, res) => {
 //提交更新內容
 app.post('/todos/:id/edit', (req, res) => {
   const id = req.params.id
-  const name = req.body.name //新修改好的資料
+  const { name, isDone } = req.body
+  // const name = req.body.name 
+  // const isDone = req.body.isDone
   return Todo.findById(id)
     .then(todo => {
       todo.name = name //把原來todo資料改成新的
-      return todo.save()//存
+      todo.isDone = isDone === 'on'
+      //運算子優先序
+      //優先執行isDone === 'on'//回傳'on'
+      //再執行賦值運算子//todo.isDone =true
+
+      // if (isDone === 'on') {
+      //   todo.isDone = true
+      // } else {
+      //   todo.isDone = false
+      // }
+      return todo.save()//存進資料庫
     })
     .then(() => res.redirect(`/todos/${id}`))
     .catch(error => console.log(error))
