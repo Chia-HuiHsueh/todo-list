@@ -11,8 +11,7 @@ require('./config/mongoose')
 
 const app = express()
 
-const port = 3000
-
+const PORT = process.env.PORT || 3000
 
 //新增了一個叫 hbs 的樣板引擎，並傳入exphbs相關的參數
 //extname: '.hbs'->指定副檔名為 .hbs
@@ -28,6 +27,6 @@ app.use(methodOverride('_method'))
 // 將 request 導入路由器
 app.use(routes)
 
-app.listen(port, () => {
-  console.log('App is running on http://localhost：3000')
+app.listen(PORT, () => {
+  console.log(`App is running on http://localhost:${PORT}`)
 })
