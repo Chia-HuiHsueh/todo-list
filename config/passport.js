@@ -1,5 +1,6 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
+const User = require('../models/user')
 module.exports = app => {
   // 初始化 Passport 模組
   app.use(passport.initialize())
@@ -12,7 +13,7 @@ module.exports = app => {
           return done(null, false, { message: 'That email is not registered!' })
         }
         if (user.password !== password) {
-          return done(null, false, { message: 'Email or Password incorrect.' })
+          return done(null, false, { message: 'Incorrect email or password.' })
         }
         return done(null, user)
       })
@@ -29,3 +30,5 @@ module.exports = app => {
       .catch(err => done(err, null))
   })
 }
+//  Q:done(null, false, { message: 'Email or Password incorrect.' })//第一個參數null代表意義是？//此狀態是否有順利執行？為何用null代表而不是用布林值
+
