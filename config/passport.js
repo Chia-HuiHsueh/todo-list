@@ -30,5 +30,3 @@ module.exports = app => {
       .catch(err => done(err, null))
   })
 }
-//  Q:done(null, false, { message: 'Email or Password incorrect.' })//第一個參數null代表意義是？//此狀態是否有順利執行？為何用null代表而不是用布林值
-
